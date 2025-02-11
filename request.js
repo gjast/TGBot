@@ -14,7 +14,6 @@ async function fetchData(url) {
 
 async function getPromotion() {
   try {
-    // Чтение файла один раз в начале
     let fileContent = await fs.readFile("./base.json", "utf8");
     let data = JSON.parse(fileContent);
     let parsedData = data.promotion;
@@ -24,7 +23,6 @@ async function getPromotion() {
 
     for (const key of keys) {
       try {
-        // Пропускаем пустые ключи
         if (!key) continue;
 
         const response = await fetch(
@@ -44,7 +42,6 @@ async function getPromotion() {
 
         const responseData = await response.json();
 
-        // Проверяем наличие данных
         if (responseData.data && 
             responseData.data[0] && 
             responseData.data[0].instruments && 
@@ -62,7 +59,6 @@ async function getPromotion() {
       }
     }
 
-    // Записываем в файл только если были обновления
     if (hasUpdates) {
       await fs.writeFile("./base.json", JSON.stringify(data, null, 2));
     }
